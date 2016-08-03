@@ -4,6 +4,10 @@ platform:
 environment:
   matrix:
     - ruby_version: "22-x64"
+  MRUBY_CLI_BINS_USER:
+    secure: NYAcJXVLl1EwoPyyznVMQQ==
+  MRUBY_CLI_BINS_TOKEN:
+    secure: YbDXC6L6HMAVLPYlgO6jn3cslMW/az/VAmmSDQTbTqA9Hf37LLRIqsITDU4nUVFd
 install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - gem install bundler --no-document
@@ -12,3 +16,11 @@ install:
 build: off
 test_script:
   - bundle exec rake
+on_success:
+  - SET RESULT=succeeded
+on_failure:
+  - SET RESULT=succeeded
+on_finish:
+  - SET PATH=C:\msys64\usr\bin;%PATH%
+  - SET BUILD_URL=https://ci.appveyor.com/project/toch/mruby-cli-bins/build/%APPVEYOR_BUILD_NUMBER%
+  - bash -lc "cd /c/projects/mruby-cli-bins; ./set_mruby-cli_github_status.sh %BUILD_URL% Windows %RESULT% appveyor \"%APPVEYOR_REPO_COMMIT_MESSAGE%%APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED%\""

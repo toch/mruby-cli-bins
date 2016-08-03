@@ -2,5 +2,16 @@ sudo: false
 language: ruby
 cache: bundler
 os:
-  - linux
-  - osx
+- linux
+- osx
+script:
+- rake
+after_script:
+- TRAVIS_COMMIT_MSG="$(git log --format=%B --no-merges -n 1)"
+- RESULT="succeeded" && [[ $TRAVIS_TEST_RESULT -eq 1 ]] && RESULT="failed"
+- BUILD_URL="https://travis-ci.org/toch/mruby-cli-bins/builds/${TRAVIS_BUILD_ID}"
+- ./set_mruby-cli_github_status.sh $BUILD_URL "Linux and OSX" $RESULT travis-ci "${TRAVIS_COMMIT_MSG}"
+env:
+  global:
+  - secure: fm3xkSQ8zwIF4IilIuXyei3rjcJkKFAMzSM/OhubDRME/vCX3Vo7n3RnODTAOFmdRg42H1pW4Rbmxid1ZdWXY0cIFpn48PGTl7tBjvrjTP6h2QdjASKuUy8tqXL4UKffcBougGsPTQhrqqhG6PLGyYyF9yJSwIUD3nIsqeMdWLtCA4l9xRdL9T4G+nS2A4IHRe6WmykGXtHdjlCUOcaaiFWCC9D2Juf2yEy7l7SE+htVO7pZAhJaRlZcDtAZOHALfP0ErLl846w58mws8mx6irWtGQFidycM2rBJfDooxXVavQm24Z8PscGFihwsEfpthZowybXCU/3PJ4KvwRuLwEIRwLq6GYFPmZa/x7FNihR3uu9SjMbokOuLDA6wOTyk+XPIU+LfwRiMV2l1hC+dSpCi5zZPGeOuqWbdx7YHT9RyJ2KpQFGXxXs62DEtL3CnknCdeyez6q0Pt1+KOwacl+mREb1FsFESLKvU2YcChvy/FZgD5DqnjPFgb7rFnxWQ57hBELYVII+gxqyljwCQSOfjrQWAODAH6/g7DNOPzycCP8AM/azy6vI+kRRncomk0ibHX1kJ0GBv0HNyXLXvMV4fCRu3hHwVB2tJptGiEYHXfAmQCVqIsnZBJUg+GzKb4ERQrmZnXNfnFvP2JBu39JSlRAtEdlfpqiHuLFqLSMM=
+  - secure: jY9lFZUGYCRe2V4DlB5Lw4mJ66cMAUCeNmNUpXOci5cYsjQ4OBunQCf3j1rM99d86MrnP77tyCs22E+EEAG/jA3s47N4oSTPWfhst3NUPRnY+NBGmP8Kp3/qZVrmaKgRI4qzb2BVoh80sba4iWQMmU3O8qxMFVCgDP/Aipbbr4hCzXlLKFD8RDf7ZOW0YD5Picm+wTJWs6Jr2SUHzOERnDkJkhzT+XiZQ9kh0ntOUWAMB43Qt90l5sc7pJigAEG+BqyNN7Gs8m1hZNMNvoO4RBcIsOgtsIOGDdf7EzwUFfnKteMDf0un58Pn9/RVPMx8r7pY+IWKZ/DM6oa2bOcYtTfQHybFquFIdT5KALKGiUZzxjEGxRaLs/jaUmP+WTdKnMVmoZ5uflkJcqcnAnJAJrIL/FGDHNmpU3K5/NB+b9L3J3DvGcc0Gs4hGZgnOCk3EzwZU8fw/ZycB+hE9Ngj2Z7wMM3InXJ5oSzYM/0VW4UQ1ylTDABglScaNDHGxA/6msYsCkzrv8av8nIQdu5wRtab9tq6yDswG38iAsI80isepfa47qGOPfe2CJh1zZPykCJEhppGrJP1Uc5b9f6Abwc8XphvWmGgqibl4l++QouCNggUSqV3TI+Hzwmn1hYHTUuDnXlrAY2+q0iyCDW31NtmxAHnSgcPsyVLkoDzMhY=
